@@ -8,12 +8,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class MapperService {
-
+    private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     /**
      * Map the native lang code to target lang code (English)
-     * 
+     *
      * @param mapping_id id of the mapping (english -> en, spanish -> sp)
      * @param source_file_path Source code file path
      */
@@ -36,7 +37,7 @@ public class MapperService {
 
     /**
      * Read YAML file and deserialize to Map<String, String>
-     * 
+     *
      * @param filepath YAML file path
      */
     private Map<String, String> readYamlToMap(String filepath) throws IOException, FileNotFoundException {
@@ -48,8 +49,7 @@ public class MapperService {
                     new File(filepath)
             );
         } catch (FileNotFoundException e) {
-            // TODO: Use logs instead Console out
-            System.out.println(filepath + " Not Found");
+            LOGGER.warning(filepath + " Not Found");
             throw new FileNotFoundException(filepath + " Not Found");
         }
 
@@ -58,8 +58,7 @@ public class MapperService {
         try{
             map = yaml.load(inputStream);
         }catch (Exception e){
-            // TODO: Use logs instead Console out
-            System.out.println("Invalid Mapping File " + filepath);
+            LOGGER.warning("Invalid Mapping File " + filepath);
             throw new IOException("Invalid Mapping File " + filepath);
         }
 
