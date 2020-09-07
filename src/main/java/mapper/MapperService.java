@@ -7,6 +7,9 @@ import java.io.*;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * This class contains logics for mapping source code.
+ */
 public class MapperService {
     private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     /**
