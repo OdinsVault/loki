@@ -5,9 +5,10 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class MapperService {
-
+    private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     /**
      * Map the native lang code to target lang code (English)
      *
@@ -47,8 +48,7 @@ public class MapperService {
                     new File(filepath)
             );
         } catch (FileNotFoundException e) {
-            // TODO: Use logs instead Console out
-            System.out.println(filepath + " Not Found");
+            LOGGER.warning(filepath + " Not Found");
             throw new FileNotFoundException(filepath + " Not Found");
         }
 
@@ -57,8 +57,7 @@ public class MapperService {
         try{
             map = yaml.load(inputStream);
         }catch (Exception e){
-            // TODO: Use logs instead Console out
-            System.out.println("Invalid Mapping File " + filepath);
+            LOGGER.warning("Invalid Mapping File " + filepath);
             throw new IOException("Invalid Mapping File " + filepath);
         }
 
