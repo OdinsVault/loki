@@ -17,10 +17,10 @@ public class MapperService {
      * @param mapping_id id of the mapping (english -> en, spanish -> sp)
      * @param source_file_path Source code file path
      */
-    public String Map(String mapping_id, String source_file_path) throws FileNotFoundException, IOException {
+    public String map(String mapping_id, String source_file_path) throws FileNotFoundException, IOException {
 
         // Get mapping registry
-        Map<String, String> mappingRegistry = this.ReadYamlToMap(
+        Map<String, String> mappingRegistry = this.readYamlToMap(
             "mappings/MappingRegistry.yml"
         );
 
@@ -28,7 +28,7 @@ public class MapperService {
         String mappingFilePath = mappingRegistry.get(mapping_id);
 
         // Get mapping file
-        Map<String, String> mapping = this.ReadYamlToMap(mappingFilePath);
+        Map<String, String> mapping = this.readYamlToMap(mappingFilePath);
 
         return mapping.get("for");
     }
@@ -39,7 +39,7 @@ public class MapperService {
      * 
      * @param filepath YAML file path
      */
-    private Map<String, String> ReadYamlToMap(String filepath) throws IOException, FileNotFoundException {
+    private Map<String, String> readYamlToMap(String filepath) throws IOException, FileNotFoundException {
         Yaml yaml = new Yaml();
 
         InputStream inputStream = null;
