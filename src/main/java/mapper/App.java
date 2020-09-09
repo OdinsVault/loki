@@ -9,7 +9,7 @@ import java.util.logging.Logger;
  */
 public final class App {
 
-    private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private App(){
 
@@ -31,6 +31,6 @@ public final class App {
 
         MapperService mapperService = new MapperService();
 
-        mapperService.map("sn", "../mapper/SimplyCodes/code1.simply");
+        mapperService.map("sn", "SimplyCodes/code1.simply");
     }
 }
