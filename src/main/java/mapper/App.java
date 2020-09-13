@@ -13,7 +13,7 @@ import picocli.CommandLine.Command;
 public class App implements Runnable{
 
     public static void main(String[] args) {
-        System.exit(new CommandLine(new App()).execute(args));
+        new CommandLine(new App()).execute(args);
     }
 
 

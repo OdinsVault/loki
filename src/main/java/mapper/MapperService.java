@@ -48,7 +48,7 @@ public class MapperService implements Runnable{
     String mappingsDir;
 
     public static void main(String[] args) {
-        System.exit(new CommandLine(new MapperService()).execute(args));
+        new CommandLine(new MapperService()).execute(args);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class MapperService implements Runnable{
     private Map<String, String> getMapping(String mappingsDir, String lngId) throws IOException {
         // Get mapping registry
         Map<String, String> mappingRegistry = this.readYamlToMap(
-            mappingsDir
+            this.mappingsDir
         );
 
         // Get mapping file from registry
@@ -122,17 +122,25 @@ public class MapperService implements Runnable{
      *
      * @param _filePath YAML file path
      */
-    private Map<String, String> readYamlToMap(String _filePath) throws IOException, FileNotFoundException {
+    private Map<String, String> readYamlToMap(String _filePath) throws FileNotFoundException {
         Yaml yaml = new Yaml();
 
+        File mappingFile;
+
+        try{
+           mappingFile = new File(_filePath);
+        }catch (NullPointerException e){
+            LOGGER.warning(e.toString());
+            throw e;
+        }
+
         InputStream inputStream = null;
+
         try {
-            inputStream = new FileInputStream(
-                    new File(_filePath)
-            );
+            inputStream = new FileInputStream(mappingFile);
         } catch (FileNotFoundException e) {
-            LOGGER.warning(_filePath + " Not Found");
-            throw new FileNotFoundException(_filePath + " Not Found");
+            LOGGER.warning(e.toString());
+            throw e;
         }
 
         Map<String, String> map;
@@ -141,7 +149,7 @@ public class MapperService implements Runnable{
             map = yaml.load(inputStream);
         }catch (Exception e){
             LOGGER.warning("Invalid Mapping File " + _filePath);
-            throw new IOException("Invalid Mapping File " + _filePath);
+            throw e;
         }
 
         return map;
@@ -154,7 +162,7 @@ public class MapperService implements Runnable{
      */
     private void translateSingleFile(Map<String, String> _map, String _sourceCodePath){
         File nativeSourceCode = new File(this.sourcePath);
-        String nativeCode = new String("");
+        String nativeCode = "";
 
         BufferedReader bufferedReader;
 
@@ -170,7 +178,6 @@ public class MapperService implements Runnable{
             String targetCode = nativeCode;
 
             for(String key: _map.keySet()){
-                System.out.println(key + ":" + _map.get(key));
                 targetCode = targetCode.replaceAll(_map.get(key), key);
             }
 
