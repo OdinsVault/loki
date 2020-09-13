@@ -2,6 +2,9 @@ package mapper;
 
 import org.yaml.snakeyaml.Yaml;
 import org.apache.commons.io.FilenameUtils;
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
 import java.io.*;
 import java.util.Map;
@@ -12,30 +15,105 @@ import java.util.logging.Logger;
  * If the source code file provided then that file will be translated.
  * Otherwise all the files with .simply extension in the directory will be translated
  */
-public class MapperService {
+
+@Command(name = "map", description = "Map native language code to english")
+public class MapperService implements Runnable{
 
     private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    /**
-     * Map the native lang code to target lang code (English)
-     *
-     * @param _mappingId id of the mapping (english -> en, spanish -> sp)
-     * @param _sourceCodePath Source code file path
-     */
-    public void map(String _mappingId, String _sourceCodePath) throws FileNotFoundException, IOException {
+    @Option(
+        names = {"-l", "--langId"},
+        description = "Native Language Id",
+        required = true
+    )
+    String lngId;
 
+    @Option(
+        names = {"-src", "--sourceFile"},
+        description = "Source Code Path"
+    )
+    String sourcePath;
+
+    @Option(
+        names = {"-dir", "--sourceDirectory"},
+        description = "Source Directory"
+    )
+    String sourceDir;
+
+    @Option(
+        names = {"-m", "--mappings"},
+        description = "Mappings Directory",
+        defaultValue = "mappings/MappingRegistry.yml"
+    )
+    String mappingsDir;
+
+    public static void main(String[] args) {
+        System.exit(new CommandLine(new MapperService()).execute(args));
+    }
+
+    @Override
+    public void run() {
+        if(this.sourceDir == null && this.sourcePath == null){
+            LOGGER.warning("User must provide either source file or directory");
+            return;
+        }
+
+        if(this.sourcePath != null){
+            try {
+                this.mapSingleFile();
+            } catch (IOException e) {
+                LOGGER.warning(e.toString());
+            }
+            return;
+        }
+
+        if(this.sourceDir != null){
+            try {
+                this.mapDirectory();
+            } catch (IOException e) {
+                LOGGER.warning(e.toString());
+            }
+            return;
+        }
+    }
+
+    private void mapSingleFile() throws IOException {
+        Map<String, String> mapping = this.getMapping(this.mappingsDir, this.lngId);
+        this.translateSingleFile(mapping, this.sourcePath);
+    }
+
+    private void mapDirectory() throws IOException {
+        Map<String, String> mapping = this.getMapping(this.mappingsDir, this.lngId);
+
+        // Get all simply files
+        File workingDirectory = new File(this.sourceDir);
+
+        File[] simplyFiles = workingDirectory.listFiles(new FilenameFilter(){
+            @Override
+            public boolean accept(File file, String s) {
+                return s.endsWith(".simply");
+            }
+        });
+
+        //translate all files
+        for (File file: simplyFiles){
+            this.translateSingleFile(mapping, file.getPath());
+        }
+    }
+
+    private Map<String, String> getMapping(String mappingsDir, String lngId) throws IOException {
         // Get mapping registry
         Map<String, String> mappingRegistry = this.readYamlToMap(
-            "mappings/MappingRegistry.yml"
+            mappingsDir
         );
 
         // Get mapping file from registry
-        String mappingFilePath = mappingRegistry.get(_mappingId);
+        String mappingFilePath = mappingRegistry.get(lngId);
 
         // Get mapping file
         Map<String, String> mapping = this.readYamlToMap(mappingFilePath);
 
-        translate(mapping, _sourceCodePath);
+        return mapping;
     }
 
 
@@ -70,26 +148,12 @@ public class MapperService {
     }
 
     /**
-     * Translate the native language code into english.
-     * @param _map Keyword mapping.
-     * @param _sourceCodePath native language code file path.
-     * */
-    private void translate(Map<String, String> _map, String _sourceCodePath){
-
-        if(_sourceCodePath != null){
-            translateSingleFile(_map, _sourceCodePath);
-        }else{
-            translateAllFiles(_map);
-        }
-    }
-
-    /**
      * Translates single file from native language to English
      * @param _map Keyword Map
      * @param _sourceCodePath Path to the native language code
      */
     private void translateSingleFile(Map<String, String> _map, String _sourceCodePath){
-        File nativeSourceCode = new File(_sourceCodePath);
+        File nativeSourceCode = new File(this.sourcePath);
         String nativeCode = new String("");
 
         BufferedReader bufferedReader;
@@ -126,26 +190,5 @@ public class MapperService {
             LOGGER.warning("Error in file " + _sourceCodePath);
         }
 
-    }
-
-    /**
-     * Tanslate all simply files from native language to English
-     * @param _map Keyword Map
-     */
-    private void translateAllFiles(Map<String, String> _map){
-        // Get all simply files
-        File workingDirecotry = new File(System.getProperty(("user.dir")));
-
-        File[] simplyFiles = workingDirecotry.listFiles(new FilenameFilter(){
-            @Override
-            public boolean accept(File file, String s) {
-                return s.endsWith(".simply");
-            }
-        });
-
-        //translate all files
-        for (File file: simplyFiles){
-            this.translateSingleFile(_map, file.getPath());
-        }
     }
 }

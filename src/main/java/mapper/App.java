@@ -1,36 +1,24 @@
 package mapper;
 
-import java.io.IOException;
-import java.util.logging.Logger;
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
 
-/**
- * Entry Point.
- *
- */
-public final class App {
-
-    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-    private App(){
-
+@Command(
+    name = "mapper",
+    description = "Main command",
+    subcommands = {
+        MapperService.class
     }
+)
+public class App implements Runnable{
 
-    /**
-     * Main Method.
-     *
-     */
     public static void main(String[] args) {
-        try{
-            Run(args);
-        }catch (Exception e){
-            LOGGER.warning("Something wrong");
-        }
+        System.exit(new CommandLine(new App()).execute(args));
     }
 
-    public static void Run(String[] args) throws IOException {
 
-        MapperService mapperService = new MapperService();
-
-        mapperService.map("sn", "SimplyCodes/code1.simply");
+    @Override
+    public void run() {
+        System.out.println("Print Description");
     }
 }
