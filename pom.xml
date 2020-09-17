@@ -15,7 +15,7 @@
   <properties>
     <mave.compile.source>1.8</mave.compile.source>
     <maven.compile.targe>1.8</maven.compile.targe>
-    <junit.version>5.6.2</junit.version>
+    <junit.version>5.7.0</junit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
