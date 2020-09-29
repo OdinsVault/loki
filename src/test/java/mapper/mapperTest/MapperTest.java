@@ -5,6 +5,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import picocli.CommandLine;
 
+import java.io.File;
+
 public class MapperTest {
 
     @Test
@@ -12,9 +14,17 @@ public class MapperTest {
         Mapper mapper = new Mapper();
         CommandLine commandLine = new CommandLine(mapper);
 
-        int exitCode = commandLine.execute("-l", "sn", "-src", "SimplyCodes/code1.simply");
+        File file = new File("src/test/TestCodes/sample_target.simply");
 
-        Assert.assertEquals(exitCode, -0);
+        if(file.exists() && !file.isDirectory()){
+            file.delete();
+        }
+
+        int exitCode = commandLine.execute("-l", "sn", "-src", "src/test/TestCodes/sample.simply");
+
+        boolean exist = file.exists() && !file.isDirectory();
+
+        Assert.assertEquals(exist, true, "Mapping Error");
     }
 
 }

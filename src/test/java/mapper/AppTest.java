@@ -1,5 +1,0 @@
-package mapper;
-
-class AppTest {
-
-}

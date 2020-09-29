@@ -1,6 +1,7 @@
 package mapper.utils;
 
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
 
 public class YamlUtils {
 
-    private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     /**
      * Read YAML file and deserialize to Map<String, String>
@@ -30,7 +31,7 @@ public class YamlUtils {
             throw e;
         }
 
-        InputStream inputStream = null;
+        InputStream inputStream;
 
         try {
             inputStream = new FileInputStream(mappingFile);
@@ -43,7 +44,7 @@ public class YamlUtils {
 
         try{
             map = yaml.load(inputStream);
-        }catch (Exception e){
+        }catch (YAMLException e){
             LOGGER.warning("Invalid Mapping File " + _filePath);
             throw e;
         }
