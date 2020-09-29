@@ -12,24 +12,24 @@ import java.util.logging.Logger;
 @CommandLine.Command(name = "map", description = "Map native language code to english")
 public class Mapper implements Runnable{
 
-    private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     @Option(
         names = {"-n", "--nativeLangId"},
         description = "Native Language Id",
         required = true
     )
-    String lngId;
+    private String lngId;
 
     @Option(
         names = {"-src", "--sourceFile"},
         description = "Source Code Path",
         required = true
     )
-    String srcFilePath;
+    private String srcFilePath;
 
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new Mapper()).execute(args);
+        new CommandLine(new Mapper()).execute(args);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class Mapper implements Runnable{
      */
     private void mapSingleFile(Map<String, String> _map, String _sourceCodePath){
         File translatedSourceCode = new File(this.srcFilePath);
-        String nativeCode = "";
+        StringBuilder nativeCode = new StringBuilder();
 
         BufferedReader bufferedReader;
 
@@ -60,11 +60,11 @@ public class Mapper implements Runnable{
             String line = bufferedReader.readLine();
 
             while(line != null){
-                nativeCode += line + System.lineSeparator();
+                nativeCode.append(line).append(System.lineSeparator());
                 line = bufferedReader.readLine();
             }
 
-            String targetCode = nativeCode;
+            String targetCode = nativeCode.toString();
 
             for(String key: _map.keySet()){
                 targetCode = targetCode.replaceAll(_map.get(key), key);

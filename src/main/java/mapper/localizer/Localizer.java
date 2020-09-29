@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 @CommandLine.Command(name = "localize", description = "Localize Simply code to native language")
 public class Localizer implements Runnable{
 
-    private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     @Option(
         names = {"-t", "--targetLngId"},
@@ -46,7 +46,7 @@ public class Localizer implements Runnable{
      */
     private void localizeSingleFile(Map<String, String> _map, String _sourceCodePath){
         File translatedSourceCode = new File(this.srcFilePath);
-        String nativeCode = "";
+        StringBuilder nativeCode = new StringBuilder();
 
         BufferedReader bufferedReader;
 
@@ -55,11 +55,11 @@ public class Localizer implements Runnable{
             String line = bufferedReader.readLine();
 
             while(line != null){
-                nativeCode += line + System.lineSeparator();
+                nativeCode.append(line).append(System.lineSeparator());
                 line = bufferedReader.readLine();
             }
 
-            String targetCode = nativeCode;
+            String targetCode = nativeCode.toString();
 
             for(String key: _map.keySet()){
                 targetCode = targetCode.replaceAll(_map.get(key), key);

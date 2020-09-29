@@ -1,14 +1,14 @@
-function main() : number{
-    number a = 5;
-    number b = 10;
+ක්‍රියාවලිය main() : අංකය{
+    අංකය a = 5;
+    අංකය b = 10;
 
-    number total = add(a, b);
-    print(total);
+    අංකය total = add(a, b);
+    පෙන්වන්න(total);
 
-    return 0;
+    යවන්න 0;
 }
 
-function add(number a, number b) : number {
-    number total = a + b;
-    return total;
+ක්‍රියාවලිය add(අංකය a, අංකය b) : අංකය {
+    අංකය total = a + b;
+    යවන්න total;
 }

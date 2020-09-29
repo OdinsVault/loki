@@ -11,7 +11,7 @@ public class AppTest {
         App app = new App();
         CommandLine commandLine = new CommandLine(app);
 
-        int exitCode = commandLine.execute();
+        commandLine.execute();
     }
 
 }
