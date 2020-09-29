@@ -1,0 +1,14 @@
+function main() : number{
+    number a = 5;
+    number b = 10;
+
+    number total = add(a, b);
+    print(total);
+
+    return 0;
+}
+
+function add(number a, number b) : number {
+    number total = a + b;
+    return total;
+}

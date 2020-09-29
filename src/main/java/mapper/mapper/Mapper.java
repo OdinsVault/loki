@@ -1,5 +1,6 @@
 package mapper.mapper;
 
+import mapper.utils.MapUtils;
 import mapper.utils.YamlUtils;
 import org.apache.commons.io.FilenameUtils;
 import picocli.CommandLine;
@@ -36,31 +37,11 @@ public class Mapper implements Runnable{
     public void run() {
         Map<String, String> map;
         try {
-            map = this.getMappingById(this.lngId);
-            this.translate(map, this.sourcePath);
+            map = MapUtils.getMappingById(this.lngId);
+            this.mapSingleFile(map, this.sourcePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-    }
-
-    /**
-     * Get keyword mapping file from mappingRegistry
-     * @param lngId - language id
-     * @return Map data structure of mapping YAML file
-     * @throws IOException
-     */
-    private Map<String, String> getMappingById(String lngId) throws IOException {
-        // Get mapping registry
-        Map<String, String> mappingRegistry = YamlUtils.YamlToMap("mappings/MappingRegistry.yml");
-
-        // Get mapping file from registry
-        String mappingFilePath = mappingRegistry.get(lngId);
-
-        // Get mapping file
-        Map<String, String> mapping = YamlUtils.YamlToMap(mappingFilePath);
-
-        return mapping;
     }
 
 
@@ -69,7 +50,7 @@ public class Mapper implements Runnable{
      * @param _map Keyword Map
      * @param _sourceCodePath Path to the native language code
      */
-    private void translate(Map<String, String> _map, String _sourceCodePath){
+    private void mapSingleFile(Map<String, String> _map, String _sourceCodePath){
         File translatedSourceCode = new File(this.sourcePath);
         String nativeCode = "";
 
