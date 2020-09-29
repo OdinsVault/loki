@@ -14,13 +14,13 @@ public class MapUtils {
      */
     public static Map<String, String> getMappingById(String lngId) throws IOException {
         // Get mapping registry
-        Map<String, String> mappingRegistry = YamlUtils.YamlToMap("mappings/MappingRegistry.yml");
+        Map<String, String> mappingRegistry = YamlUtils.yamlToMap("mappings/MappingRegistry.yml");
 
         // Get mapping file from registry
         String mappingFilePath = mappingRegistry.get(lngId);
 
         // Get mapping file
-        Map<String, String> mapping = YamlUtils.YamlToMap(mappingFilePath);
+        Map<String, String> mapping = YamlUtils.yamlToMap(mappingFilePath);
 
         return mapping;
     }

@@ -1,4 +1,4 @@
-package localizerTest;
+package localizertest;
 
 import mapper.localizer.Localizer;
 import org.testng.Assert;

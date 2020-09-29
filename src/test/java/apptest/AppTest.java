@@ -1,4 +1,4 @@
-package appTest;
+package apptest;
 
 import mapper.App;
 import org.testng.annotations.Test;

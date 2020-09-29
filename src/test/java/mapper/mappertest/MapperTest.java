@@ -1,4 +1,4 @@
-package mapper.mapperTest;
+package mapper.mappertest;
 
 import mapper.mapper.Mapper;
 import org.testng.Assert;
@@ -20,7 +20,7 @@ public class MapperTest {
             file.delete();
         }
 
-        commandLine.execute("-l", "sn", "-src", "src/test/TestCodes/sampleNative.simply");
+        commandLine.execute("-n", "sn", "-src", "src/test/TestCodes/sampleNative.simply");
 
         boolean exist = file.exists() && !file.isDirectory();
 

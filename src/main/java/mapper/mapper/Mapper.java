@@ -1,9 +1,9 @@
 package mapper.mapper;
 
 import mapper.utils.MapUtils;
-import mapper.utils.YamlUtils;
 import org.apache.commons.io.FilenameUtils;
 import picocli.CommandLine;
+import picocli.CommandLine.Option;
 
 import java.io.*;
 import java.util.Map;
@@ -14,23 +14,22 @@ public class Mapper implements Runnable{
 
     private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    @CommandLine.Option(
-        names = {"-l", "--langId"},
+    @Option(
+        names = {"-n", "--nativeLangId"},
         description = "Native Language Id",
         required = true
     )
     String lngId;
 
-    @CommandLine.Option(
+    @Option(
         names = {"-src", "--sourceFile"},
         description = "Source Code Path",
         required = true
     )
-    String sourcePath;
+    String srcFilePath;
 
     public static void main(String[] args) {
         int exitCode = new CommandLine(new Mapper()).execute(args);
-        System.exit(exitCode);
     }
 
     @Override
@@ -38,7 +37,7 @@ public class Mapper implements Runnable{
         Map<String, String> map;
         try {
             map = MapUtils.getMappingById(this.lngId);
-            this.mapSingleFile(map, this.sourcePath);
+            this.mapSingleFile(map, this.srcFilePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,7 +50,7 @@ public class Mapper implements Runnable{
      * @param _sourceCodePath Path to the native language code
      */
     private void mapSingleFile(Map<String, String> _map, String _sourceCodePath){
-        File translatedSourceCode = new File(this.sourcePath);
+        File translatedSourceCode = new File(this.srcFilePath);
         String nativeCode = "";
 
         BufferedReader bufferedReader;

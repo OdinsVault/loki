@@ -3,6 +3,7 @@ package mapper.localizer;
 import mapper.utils.MapUtils;
 import org.apache.commons.io.FilenameUtils;
 import picocli.CommandLine;
+import picocli.CommandLine.Option;
 
 import java.io.*;
 import java.util.Map;
@@ -13,14 +14,14 @@ public class Localizer implements Runnable{
 
     private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    @CommandLine.Option(
-        names = {"-t", "--targetLng"},
+    @Option(
+        names = {"-t", "--targetLngId"},
         description = "Target language ID",
         required = true
     )
     private String targetLang;
 
-    @CommandLine.Option(
+    @Option(
         names = {"-src", "--sourceFile"},
         description = "Source simply code",
         required = true

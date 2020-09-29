@@ -19,7 +19,7 @@ public class YamlUtils {
      *
      * @param _filePath YAML file path
      */
-    public static Map<String, String> YamlToMap(String _filePath) throws FileNotFoundException {
+    public static Map<String, String> yamlToMap(String _filePath) throws FileNotFoundException {
         Yaml yaml = new Yaml();
 
         File mappingFile;
