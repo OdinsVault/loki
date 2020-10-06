@@ -10,6 +10,48 @@
 
 Source-Code-Mapper is a utility tool which handles Simply's language extensibility feature by mapping native language source code into target language (English) source code before transpilation.
 
+Source-code-mapper currently consist two main components.
+1. Mapper
+2. Localizer
+
+### Mapper
+
+Users can use mapper to translate native language code
+(Ex - Source code written in Sinhala) to English.
+
+### Localizer
+
+Users can use localizer to translate source code written in English
+to native language.
+
+## How to use
+
+#### mapper
+
+* Command
+  * **mapper**
+* Options
+  * --sourceFile | -src
+    * Source code file location
+  * --nativeLangId | -n
+    * Source native language id
+
+Execute mapper
+
+<b>java -jar mapper -src "c://documents//codes//sample.simply" -n sn</b>
+
+#### localizer
+
+* Command
+  * **localizer**
+* Options
+  * --sourceFile | -src
+    * Source code file location
+  * --targetLngId | -t
+    * Target native language id
+
+Users can find the native language id from [mappings registry](mappings/MappingRegistry.yml)
+
 ## Building from Source
 
 ## Contribute
