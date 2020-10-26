@@ -1,6 +1,6 @@
 package localizertest;
 
-import mapper.localizer.Localizer;
+import localizer.Localizer;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import picocli.CommandLine;

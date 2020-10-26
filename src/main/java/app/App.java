@@ -1,3 +1,5 @@
+package app;
+
 import com.sun.istack.internal.localization.Localizer;
 import mapper.Mapper;
 import picocli.CommandLine;

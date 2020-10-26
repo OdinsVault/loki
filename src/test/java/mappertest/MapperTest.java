@@ -1,6 +1,6 @@
-package mapper.mappertest;
+package mappertest;
 
-import mapper.mapper.Mapper;
+import mapper.Mapper;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import picocli.CommandLine;
@@ -25,6 +25,14 @@ public class MapperTest {
         boolean exist = file.exists() && !file.isDirectory();
 
         Assert.assertTrue(exist, "Mapping Error");
+    }
+
+    @Test
+    public void configFileTest(){
+        Mapper mapper = new Mapper();
+        CommandLine commandLine = new CommandLine(mapper);
+
+        commandLine.execute("-cp", "../../TestConfigFiles/sampleConfig.yml");
     }
 
 }
