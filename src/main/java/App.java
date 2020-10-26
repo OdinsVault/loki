@@ -1,7 +1,5 @@
-package mapper;
-
-import mapper.localizer.Localizer;
-import mapper.mapper.Mapper;
+import com.sun.istack.internal.localization.Localizer;
+import mapper.Mapper;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 

@@ -1,4 +1,4 @@
-package mapper.utils;
+package utils;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;

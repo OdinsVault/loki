@@ -1,4 +1,4 @@
-package mapper.utils;
+package utils;
 
 public class ConfigDescriptor {
 
