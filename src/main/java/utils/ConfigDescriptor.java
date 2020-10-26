@@ -2,36 +2,47 @@ package utils;
 
 public class ConfigDescriptor {
 
-    private String targetLangId;
+    // sinhala, tamil
+    private String targetMotherTongueId;
 
-    private String sourceLangId;
+    // sinhala, tamil
+    private String sourceMotherTongueId;
 
+    // java, python
+    private String programmingLanguage;
+
+    // file to be converted
     private String sourceFilePath;
 
-    // validate target language id
-    public void setTargetLangId(String targetLangId) {
-        this.targetLangId = targetLangId;
+    public String getTargetMotherTongueId() {
+        return targetMotherTongueId;
     }
 
-    // validate source language id
-    public void setSourceLangId(String sourceLangId) {
-        this.sourceLangId = sourceLangId;
+    public void setTargetMotherTongueId(String targetMotherTongueId) {
+        this.targetMotherTongueId = targetMotherTongueId;
     }
 
-    // validate source file path
-    public void setSourceFilePath(String sourceFilePath) {
-        this.sourceFilePath = sourceFilePath;
+    public String getSourceMotherTongueId() {
+        return sourceMotherTongueId;
     }
 
-    public String getTargetLangId() {
-        return targetLangId;
+    public void setSourceMotherTongueId(String sourceMotherTongueId) {
+        this.sourceMotherTongueId = sourceMotherTongueId;
     }
 
-    public String getSourceLangId() {
-        return sourceLangId;
+    public String getProgrammingLanguage() {
+        return programmingLanguage;
+    }
+
+    public void setProgrammingLanguage(String programmingLanguage) {
+        this.programmingLanguage = programmingLanguage;
     }
 
     public String getSourceFilePath() {
         return sourceFilePath;
+    }
+
+    public void setSourceFilePath(String sourceFilePath) {
+        this.sourceFilePath = sourceFilePath;
     }
 }

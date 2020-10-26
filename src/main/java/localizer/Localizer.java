@@ -1,5 +1,7 @@
 package localizer;
 
+import utils.ConfigDescriptor;
+import utils.ConfigUtils;
 import utils.MapUtils;
 import org.apache.commons.io.FilenameUtils;
 import picocli.CommandLine;
@@ -28,14 +30,32 @@ public class Localizer implements Runnable{
     )
     private String srcFilePath;
 
+    @Option(
+        names = {"-cp", "--configFilePath"},
+        description = "Configuration file path."
+    )
+    private String configFilePath;
+
     @Override
     public void run() {
-        Map<String, String> map;
-        try{
-            map = MapUtils.getMappingById(this.targetLang, true);
-            this.localizeSingleFile(map, this.srcFilePath);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if(this.configFilePath != null){
+            try {
+                ConfigDescriptor configDescriptor = ConfigUtils.loadConfigs(this.configFilePath);
+                Map<String, String> map = MapUtils.getMappingById(configDescriptor.getTargetMotherTongueId(), true);
+                this.localizeSingleFile(map, configDescriptor.getSourceFilePath());
+            } catch (FileNotFoundException e) {
+                LOGGER.warning("Config file not found at " + this.configFilePath);
+            } catch (IOException e) {
+                LOGGER.warning("Mapping file not found");
+            }
+        }else{
+            try{
+                Map<String, String> map = MapUtils.getMappingById(this.targetLang, true);
+                this.localizeSingleFile(map, this.srcFilePath);
+            } catch (IOException e) {
+                LOGGER.warning("Mapping file with id [" + this.targetLang + "] not found");
+            }
         }
     }
 

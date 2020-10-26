@@ -3,6 +3,8 @@ package mapper;
 import org.apache.commons.io.FilenameUtils;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
+import utils.ConfigDescriptor;
+import utils.ConfigUtils;
 import utils.MapUtils;
 
 import java.io.*;
@@ -16,17 +18,21 @@ public class Mapper implements Runnable{
 
     @Option(
         names = {"-n", "--nativeLangId"},
-        description = "Native Language Id",
-        required = true
+        description = "Native Language Id"
     )
     private String lngId;
 
     @Option(
         names = {"-src", "--sourceFile"},
-        description = "Source Code Path",
-        required = true
+        description = "Source Code Path"
     )
     private String srcFilePath;
+
+    @Option(
+        names = {"-cp", "--configFilePath"},
+        description = "Configuration file path."
+    )
+    private String configFilePath;
 
     public static void main(String[] args) {
         new CommandLine(new Mapper()).execute(args);
@@ -34,15 +40,27 @@ public class Mapper implements Runnable{
 
     @Override
     public void run() {
-        Map<String, String> map;
-        try {
-            map = MapUtils.getMappingById(this.lngId);
-            this.mapSingleFile(map, this.srcFilePath);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(this.configFilePath != null){
+            try {
+                ConfigDescriptor configDescriptor = ConfigUtils.loadConfigs(this.configFilePath);
+                Map<String, String> map = MapUtils.getMappingById(configDescriptor.getSourceMotherTongueId());
+                this.mapSingleFile(map, configDescriptor.getSourceFilePath());
+            } catch (FileNotFoundException e) {
+                LOGGER.warning("Configuration file not found in path " + this.configFilePath);
+            } catch (IOException e) {
+                LOGGER.warning("Mapping file not found");
+            }
+        }else{
+            try {
+                // Get keyword mapping from mapping registry
+                Map<String, String> map;
+                map = MapUtils.getMappingById(this.lngId);
+                this.mapSingleFile(map, this.srcFilePath);
+            } catch (IOException e) {
+                LOGGER.warning("Mapping file with id [" + this.lngId + "]" + "not found");
+            }
         }
     }
-
 
     /**
      * Translates single file from native language to English
